@@ -27,7 +27,9 @@ Optionally, if you run "grails spork" with no arguments, it will enter "guard mo
 tests every 3 seconds and automatically compile and run any tests when they change.
 
 In both cases, the spork command will compile the tests (if needed) and then invoke the test *inside* the running instance.
+
 ---
+
 Optionally, since the tests are executed by invoking the spork TestRunner controller, you can also run the tests manually by pointing at:
 
     http://localhost:8080/spork/testRunner/run?testPattern=<TestPattern>
