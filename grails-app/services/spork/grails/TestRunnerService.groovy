@@ -105,16 +105,28 @@ class TestRunnerService {
                 grailsApplication.classLoader
         )
 
+        def reportFormats = ["xml", "plain"]
+
         // Setup bindings needed by test code
         binding.setVariable("grailsSettings", bs)
         binding.setVariable("resolveResources", resolver)
         binding.setVariable("classLoader", classLoader)
         binding.setVariable("currentTestPhaseName", "integration")
         binding.setVariable("currentTestTypeName", "integration")
-        binding.setVariable("testReportsDir", bs.testReportsDir)
+        binding.setVariable("testReportsDir", ensureTestDirectories(bs.testReportsDir, reportFormats))
         binding.setVariable("testOptions", [echoOut: true, echoErr: true])
-        binding.setVariable("reportFormats", ["xml", "plain"])
+        binding.setVariable("reportFormats", reportFormats)
         binding.setVariable("appCtx", grailsApplication.mainContext)
         binding
+    }
+
+    private File ensureTestDirectories(File testReportsDir, reportFormats) {
+        if( !testReportsDir.exists() ) {
+            testReportsDir.mkdirs()
+        }
+
+        // Create sub-directories for reports (if needed)
+        reportFormats.each { new File(it, testReportsDir).mkdirs() }
+        testReportsDir
     }
 }
