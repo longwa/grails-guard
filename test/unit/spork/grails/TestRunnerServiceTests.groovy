@@ -11,7 +11,13 @@ import org.junit.*
 @TestFor(TestRunnerService)
 class TestRunnerServiceTests {
 
-    void testSomething() {
-        fail "Implement me"
+    void testCreateBinding() {
+        def binding = service.createBuildBinding()
+        assert binding != null
+    }
+
+    void testRunTests() {
+        def results = service.runTests(["Classpath"])
+        assert results != null
     }
 }

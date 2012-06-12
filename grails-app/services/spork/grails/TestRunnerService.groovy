@@ -82,7 +82,7 @@ class TestRunnerService {
     /**
      * Create a groovy binding to satisfy the default grails test type
      */
-    private Binding createBuildBinding() {
+    protected Binding createBuildBinding() {
 
         // Resource resolver
         def resolver = { pattern ->
@@ -127,7 +127,7 @@ class TestRunnerService {
      * @param reportFormats
      * @return
      */
-    private File ensureTestDirectories(File testReportsDir, reportFormats) {
+    protected File ensureTestDirectories(File testReportsDir, reportFormats) {
         if( !testReportsDir.exists() ) {
             testReportsDir.mkdirs()
         }
