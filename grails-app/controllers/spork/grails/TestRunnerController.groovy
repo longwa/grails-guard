@@ -1,5 +1,7 @@
 package spork.grails
 
+import grails.converters.JSON
+
 class TestRunnerController {
     def testRunnerService
 
@@ -25,6 +27,11 @@ class TestRunnerController {
         int passed = results?.passCount ?: 0
         int failed = results?.failCount ?: 0
 
-        [testPattern: testPattern.toString(), failures: results?.listener?.failures, finished: results?.listener?.finished, totalPassed: passed, totalFailed: failed]
+        if( params.format == "json" ) {
+            render([results] as JSON)
+        }
+        else {
+            [testPattern: testPattern.toString(), failures: results?.listener?.failures, finished: results?.listener?.finished, totalPassed: passed, totalFailed: failed]
+        }
     }
 }

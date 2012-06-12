@@ -120,6 +120,13 @@ class TestRunnerService {
         binding
     }
 
+    /**
+     * Since the user may not have run test-app, some of the target directories may not exist.
+     *
+     * @param testReportsDir
+     * @param reportFormats
+     * @return
+     */
     private File ensureTestDirectories(File testReportsDir, reportFormats) {
         if( !testReportsDir.exists() ) {
             testReportsDir.mkdirs()

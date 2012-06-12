@@ -7,8 +7,12 @@ includeTargets << grailsScript("_GrailsTest")
 
 recompileFrequence = Integer.parseInt(System.getProperty("recompile.frequency") ?: "3")
 
+// Base
+serverHost = System.getProperty("server.host") ?: "localhost"
+serverPort = System.getProperty("server.port") ?: "8080"
+
 target(main: "Run integration test(s) inside a running server") {
-    def tests = []
+    def tests
 
     // Re-run failed tests
     reRunTests = argsMap["rerun"]
@@ -57,13 +61,27 @@ def compile() {
 }
 
 def runTests(tests) {
-    def http = new HTTPBuilder( 'http://localhost:8080' )
-    http.request( Method.GET ) {
-        uri.path = "/spork/testRunner/run"
+    long startTime = new Date().time
 
-        response.success = { resp ->
-            grailsConsole.log resp.statusLine.toString()
+    def http = new HTTPBuilder( "http://${serverHost}:${serverPort}/spork/testRunner/",  )
+    http.get( path: 'run', query: [format: 'json', testPattern: tests] ) { resp, json ->
+        json.each {
+            outputResults(it, new Date().time - startTime)
         }
+    }
+}
+
+def outputResults(def results, def executionTime = 0) {
+    results.listener.failures.each { failure ->
+        grailsConsole.addStatus "Failure: "
+        grailsConsole.log "${failure.description.displayName}"
+        grailsConsole.log failure.trace
+        grailsConsole.log ""
+    }
+
+    grailsConsole.addStatus "Completed ${results.listener.finished.size()} integration tests, ${results.failCount} failed in ${executionTime}ms"
+    if( results.failCount > 0 ) {
+        grailsConsole.error "Tests FAILED"
     }
 }
 
