@@ -73,7 +73,7 @@ def compile() {
 def runTests(tests) {
     if( tests ) {
         long startTime = new Date().time
-        def http = new HTTPBuilder( "http://${serverHost}:${serverPort}/spork/testRunner/",  )
+        def http = new HTTPBuilder("http://${serverHost}:${serverPort}/spork/testRunner/")
         http.get( path: 'run', query: [format: 'json', testPattern: tests] ) { resp, json ->
             json.each {
                 outputResults(it, new Date().time - startTime)

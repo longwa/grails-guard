@@ -1,14 +1,13 @@
 package spork.grails
 
-import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
-import org.codehaus.groovy.grails.test.support.GrailsTestMode
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
-import org.junit.runner.Result
-import org.codehaus.groovy.grails.test.junit4.result.JUnit4ResultGrailsTestTypeResultAdapter
-import org.junit.runner.notification.RunListener
-import org.junit.runner.notification.Failure
+import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
+import org.codehaus.groovy.grails.test.support.GrailsTestMode
 import org.junit.runner.Description
+import org.junit.runner.Result
+import org.junit.runner.notification.Failure
+import org.junit.runner.notification.RunListener
 
 /**
  * Custom test type for running spork tests via the normal grails mechanism
@@ -34,18 +33,17 @@ class SporkGrailsTestType extends JUnit4GrailsTestType {
 
         notifier.fireTestRunFinished(result)
 
-        new SporkGrailsTestTypeResultAdapter(result, runListener)
+        new SporkGrailsTestTypeResultAdapter(runListener)
     }
 }
 
 /**
  * Customer wrapper for returning test results
  */
-class SporkGrailsTestTypeResultAdapter extends JUnit4ResultGrailsTestTypeResultAdapter {
-    SporkRunListener listener
+class SporkGrailsTestTypeResultAdapter implements GrailsTestTypeResult {
+    def listener
 
-    SporkGrailsTestTypeResultAdapter(Result result, SporkRunListener listener) {
-        super(result)
+    SporkGrailsTestTypeResultAdapter(def listener) {
         this.listener = listener
     }
 

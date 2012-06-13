@@ -29,4 +29,8 @@ class ClasspathTests extends GroovyTestCase {
         def something = "Something"
         assert something == null
     }
+
+    void testThrowException() {
+        throw new IllegalArgumentException("You can't do whatever you tried to do here")
+    }
 }
