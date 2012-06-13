@@ -20,7 +20,6 @@ eventAllTestsStart = {
 }
 
 sporkTestPhasePreparation = {
-    println metadata.'app.name'
 }
 
 sporkTestPhaseCleanUp = {
