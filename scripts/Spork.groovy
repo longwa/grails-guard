@@ -27,7 +27,7 @@ def watchForTestChanges() {
             testTargetPatterns = modifiedFiles.collect { new GrailsTestTargetPattern(it) } as GrailsTestTargetPattern[]
 
             // Run the tests
-            def sporkTestType = loadSporkTestTypeClass().newInstance("spork", "integration")
+            def sporkTestType = loadSporkTestTypeClass().newInstance(metadata.'app.name', "spork", "integration")
             currentTestPhaseName = "spork"
 
             processTests(sporkTestType)

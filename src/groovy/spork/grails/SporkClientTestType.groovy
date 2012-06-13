@@ -13,8 +13,11 @@ import org.junit.runner.notification.Failure
  * Test type for running tests via the spork client
  */
 class SporkClientTestType extends JUnit4GrailsTestType {
-    SporkClientTestType(String name, String relativeSourcePath) {
+    String appName
+
+    SporkClientTestType(String appName, String name, String relativeSourcePath) {
         super(name, relativeSourcePath)
+        this.appName = appName
     }
 
     @Override
@@ -24,7 +27,7 @@ class SporkClientTestType extends JUnit4GrailsTestType {
         notifier.addListener(result.createListener())
 
         // Execute via the spork test runner
-        def http = new HTTPBuilder("http://localhost:8080/spork/testRunner/")
+        def http = new HTTPBuilder("http://localhost:8080/${appName}/spork/")
         def jsonResults = null
         http.get( path: 'run', query: [format: 'json', testPattern: testTargetPatterns.collect{ it.rawPattern } ] ) { resp, json ->
             json.each {
