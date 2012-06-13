@@ -11,10 +11,9 @@ loadSporkTestTypeClass = {->
     }
 }
 
-// Load spork test types
 sporkTests = []
 
-eventAllTestsStart = {
+loadSporkTestTypes = {
     phasesToRun << "spork"
     sporkTests << loadSporkTestTypeClass().newInstance(metadata.'app.name', "spork", "integration")
 }
@@ -23,4 +22,12 @@ sporkTestPhasePreparation = {
 }
 
 sporkTestPhaseCleanUp = {
+}
+
+eventAllTestsStart = {
+    loadSporkTestTypes()
+}
+
+eventPackagePluginsEnd = {
+    loadSporkTestTypes()
 }
