@@ -43,17 +43,18 @@ The scan frequency can be changed by setting the "recompile.frequency" property 
 
 Web Interface
 -------------
-Since the tests are executed by invoking the spork TestRunner controller, you can also run the tests manually by pointing at:
+Since the tests are executed by invoking the Spork controller, you can also run the tests manually by pointing at:
 
-    http://localhost:8080/spork/testRunner/run?testPattern=<TestPattern>
+    http://localhost:8080/myApp/spork/run?testPattern=<TestPattern>
 
-If no pattern is given, all integration tests are run. Once the tests complete, the TestRunner will render a simple GSP with basic test results.
+If no pattern is given, all integration tests are run. Once the tests complete, the SporkController will render a simple GSP with basic test results.
 You can also see the results and output in the server logs and/or console.
 
 Known Issues
 ------------
 * Since the environment is not reloaded, tests must be careful to cleanup after themselves, even if running against the in-memory database since the create-drop
 only happens when the server instance is restarted.
+* The spork test type runs by default when you run "grails test-app". This will actually try to run the integration tests twice.
 
 Future
 ----

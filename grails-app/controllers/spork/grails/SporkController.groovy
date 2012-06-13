@@ -2,7 +2,7 @@ package spork.grails
 
 import grails.converters.JSON
 
-class TestRunnerController {
+class SporkController {
     def testRunnerService
 
     /**
