@@ -59,6 +59,8 @@
           <root url="jar://$USER_HOME$/.grails/ivy-cache/classworlds/classworlds/jars/classworlds-1.1-alpha-2.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/ant/ant/jars/ant-1.6.5.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.maven/maven-ant-tasks/jars/maven-ant-tasks-2.1.0.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.0.3.jar!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.codehaus.groovy.modules.http-builder/http-builder/jars/http-builder-0.5.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

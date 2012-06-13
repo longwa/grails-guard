@@ -1,3 +1,13 @@
-target/
+*.class
 *.log
 *.iws
+workspace.xml
+devDb.*
+Thumbs.db
+
+target/
+logs/
+
+grails-spork-*.zip
+plugin.xml
+
