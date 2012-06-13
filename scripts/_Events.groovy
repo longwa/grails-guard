@@ -16,7 +16,7 @@ sporkTests = []
 
 eventAllTestsStart = {
     phasesToRun << "spork"
-    sporkTests << loadSporkTestTypeClass().newInstance("integration", "integration")
+    sporkTests << loadSporkTestTypeClass().newInstance("spork", "integration")
 }
 
 sporkTestPhasePreparation = {

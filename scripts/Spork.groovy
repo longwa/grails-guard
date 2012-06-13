@@ -1,25 +1,11 @@
-import groovyx.net.http.HTTPBuilder
-import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
+import org.codehaus.groovy.grails.test.GrailsTestTargetPattern
 
-includeTargets << grailsScript("_GrailsClean")
 includeTargets << grailsScript("_GrailsTest")
 
 recompileFrequence = Integer.parseInt(System.getProperty("recompile.frequency") ?: "3")
 
-// Base
-serverHost = System.getProperty("server.host") ?: "localhost"
-serverPort = System.getProperty("server.port") ?: "8080"
-
 target(main: "Run integration test(s) inside a running server") {
-    // If we are given tests to run, run them and exit. Otherwise, just loop and run in guard mode
-    def tests = argsMap.params
-    if( tests ) {
-        compile()
-        runTests(tests)
-    }
-    else {
-        watchForTestChanges()
-    }
+    watchForTestChanges()
 }
 
 def watchForTestChanges() {
@@ -28,7 +14,7 @@ def watchForTestChanges() {
 
     //noinspection GroovyInfiniteLoopStatement
     while(true) {
-        def modifiedFiles = []
+        List<String> modifiedFiles = []
         if( lastScanned ) {
             modifiedFiles = findUpdatedTests(lastScanned)
         }
@@ -36,8 +22,17 @@ def watchForTestChanges() {
         // If anything was modified, compile and run
         if( modifiedFiles ) {
             modifiedFiles.each { grailsConsole.log "Executing updated test: ${it}" }
-            compile()
-            runTests(modifiedFiles)
+
+            // Set the target patterns
+            testTargetPatterns = modifiedFiles.collect { new GrailsTestTargetPattern(it) } as GrailsTestTargetPattern[]
+
+            // Run the tests
+            def sporkTestType = loadSporkTestTypeClass().newInstance("spork", "integration")
+            currentTestPhaseName = "spork"
+
+            processTests(sporkTestType)
+
+            currentTestPhaseName = null
         }
 
         lastScanned = new Date().time
@@ -47,6 +42,8 @@ def watchForTestChanges() {
 
 def findUpdatedTests(long lastScanned) {
     def files = []
+
+    //noinspection GroovyAssignabilityCheck
     def testDir = new File("integration", testSourceDir)
     testDir.traverse {
         if( it.isFile() && it.lastModified() > lastScanned ) { files << it }
@@ -56,51 +53,15 @@ def findUpdatedTests(long lastScanned) {
     }
 }
 
-def compile() {
-    def testType = new JUnit4GrailsTestType("integration", "integration")
-    def relativePathToSource = testType.relativeSourcePath
-    if (relativePathToSource) {
-        def source = new File("${testSourceDir}", relativePathToSource)
-
-        //noinspection GroovyAssignabilityCheck
-        def dest = new File(grailsSettings.testClassesDir, relativePathToSource)
-
-        // Compile the tests
-        compileTests(testType, source, dest)
+loadSporkTestTypeClass = {->
+    def doLoad = {-> classLoader.loadClass('spork.grails.SporkClientTestType') }
+    try {
+        doLoad()
     }
-}
-
-def runTests(tests) {
-    if( tests ) {
-        long startTime = new Date().time
-        def http = new HTTPBuilder("http://${serverHost}:${serverPort}/spork/testRunner/")
-        http.get( path: 'run', query: [format: 'json', testPattern: tests] ) { resp, json ->
-            json.each {
-                outputResults(it, new Date().time - startTime)
-            }
-        }
-    }
-}
-
-def outputResults(def results, def executionTime = 0) {
-    if( !results?.equals(null) ) {
-        results.listener.failures.each { failure ->
-            grailsConsole.addStatus "Failure: "
-            grailsConsole.log "${failure.description.displayName}"
-            grailsConsole.log failure.trace
-            grailsConsole.log ""
-        }
-
-        grailsConsole.addStatus "Completed ${results.listener.finished.size()} integration tests, ${results.failCount} failed in ${executionTime}ms"
-        if( results.failCount > 0 ) {
-            grailsConsole.error "Tests FAILED"
-        }
-        else {
-            grailsConsole.info "Tests PASSED"
-        }
-    }
-    else {
-        grailsConsole.addStatus "Completed 0 tests. Maybe the test pattern did not match any tests?"
+    catch(ClassNotFoundException ignored) {
+        includeTargets << grailsScript("_GrailsCompile")
+        compile()
+        doLoad()
     }
 }
 

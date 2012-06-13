@@ -7,35 +7,48 @@ for tests to run.
 
 This plugin borrows and combines ideas from the similarly named Rails plugin as well as the Rails guard plugin to provide a combination of both.
 
-The plugin consists of two parts:
+The plugin has two components:
 
 1. A simple controller and service that can load and run an integration test within a running server instance.
-2. A custom grails script that allows you to run a test from the command line or loop and run any modified tests automatically.
+2. Custom grails scripts that allows you to run a test from the command line or loop and run any modified tests automatically.
 
-Usage
------
+There are two ways of using the spork plugin:
+
+1. Normal Mode - Running test-app via command line or an IDE
+2. Guard Mode - Listening for changes to test cases and running automatically
+
+Both modes take care of recompiling the tests prior to execution. This, combined with the reloading agent of the running server instance, allows most
+changes to be tested without needing to restart.
+
+Normal Testing
+--------------
 Start your server using "grails run-app" as normal. If you want to run integration tests in the "test" environment (which is typical), you'll want 
 to start a server with "grails test run-app" instead.
 
-Once the server is running, you can run tests using the "spork" command:
+Once the server is running, you can run integration tests using the custom "spork" phase and type:
 
-    grails spork <test-pattern> 
+    grails test-app spork: <test-pattern>
 
-The "test-pattern" can be any valid test pattern that "grails test-app" can use (see test-app for details).
+The "spork" type is essentially the same as "integration" except instead of running the tests in place, it executes the tests via the running
+application instance (currently only localhost:8080 is supported)
 
-Optionally, if you run "grails spork" with no arguments, it will enter "guard mode". In this mode, it will scan for changes to integration
-tests every 3 seconds and automatically compile and run any tests when they change.
+Guard Mode
+----------
+Start this mode by running the "spork" command:
 
-In both cases, the spork command will compile the tests (if needed) and then invoke the test *inside* the running instance.
+    grails spork
 
----
+In this mode, it will scan for changes to integration tests every 3 seconds, by default, and automatically compile and run tests as they change.
+The scan frequency can be changed by setting the "recompile.frequency" property (in seconds).
 
-Optionally, since the tests are executed by invoking the spork TestRunner controller, you can also run the tests manually by pointing at:
+Web Interface
+-------------
+Since the tests are executed by invoking the spork TestRunner controller, you can also run the tests manually by pointing at:
 
     http://localhost:8080/spork/testRunner/run?testPattern=<TestPattern>
 
-If no pattern is given, all integration tests are run. Once the tests complete, the TestRunner will render a GSP with basic test results. You can also see the 
-results and log output in the server logs or console.
+If no pattern is given, all integration tests are run. Once the tests complete, the TestRunner will render a simple GSP with basic test results.
+You can also see the results and output in the server logs and/or console.
 
 Known Issues
 ------------
