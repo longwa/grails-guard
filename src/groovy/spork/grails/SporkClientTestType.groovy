@@ -90,7 +90,12 @@ class SporkClientTestType extends JUnit4GrailsTestType {
         }
 
         if( !t ) {
-            t = new ExceptionWrapper(jsonFailure.exception.message)
+            if( jsonFailure.exception.message && !jsonFailure.exception.message.equals(null)) {
+                t = new ExceptionWrapper(jsonFailure.exception.message)
+            }
+            else {
+                t = new ExceptionWrapper()
+            }
         }
 
         // Populate the correct stack trace
@@ -107,6 +112,10 @@ class SporkClientTestType extends JUnit4GrailsTestType {
 }
 
 class ExceptionWrapper extends Throwable {
+    ExceptionWrapper() {
+        super()
+    }
+
     ExceptionWrapper(String s) {
         super(s)
     }
