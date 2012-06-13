@@ -31,7 +31,8 @@ class SporkClientTestType extends JUnit4GrailsTestType {
         def jsonResults = null
         http.get( path: 'run', query: [format: 'json', testPattern: testTargetPatterns.collect{ it.rawPattern } ] ) { resp, json ->
             json.each {
-                if( !it.equals(null) ) {
+                // JSONNull object has some weird == behavior, workaround calling .equals()
+                if( it && !it.equals(null) ) {
                     jsonResults = it
                 }
             }
