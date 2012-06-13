@@ -21,6 +21,7 @@ def watchForTestChanges() {
 
         // If anything was modified, compile and run
         if( modifiedFiles ) {
+            grailsConsole.addStatus ""
             modifiedFiles.each { grailsConsole.log "Executing updated test: ${it}" }
 
             // Set the target patterns
@@ -33,6 +34,9 @@ def watchForTestChanges() {
             processTests(sporkTestType)
 
             currentTestPhaseName = null
+
+            grailsConsole.addStatus "Tests Complete"
+            grailsConsole.addStatus ""
         }
 
         lastScanned = new Date().time
