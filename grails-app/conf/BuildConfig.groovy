@@ -15,9 +15,6 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
-        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') {
-            excludes "commons-logging", "xml-apis", "groovy"
-        }
     }
 
     plugins {
