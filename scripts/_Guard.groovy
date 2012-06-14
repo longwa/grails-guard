@@ -48,9 +48,7 @@ def watchLoop(GuardFileChangeListener listener) {
             grailsConsole.addStatus "--------------------------------------------------------------------"
             grailsConsole.addStatus "Detected changes for ${changes*.name.join(',')}, re-running tests..."
             grailsConsole.addStatus "--------------------------------------------------------------------"
-
-            // Set the target patterns
-            //testTargetPatterns = modifiedFiles.collect { new GrailsTestTargetPattern(it) } as GrailsTestTargetPattern[]
+            sleep(1000)
 
             // Run the tests
             def mode = new GrailsTestMode(autowire: true, wrapInTransaction: true, wrapInRequestEnvironment: true)
