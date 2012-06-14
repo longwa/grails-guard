@@ -1,33 +1,29 @@
-// Load the custom test type
-loadSporkTestTypeClass = {->
-    def doLoad = {-> classLoader.loadClass('spork.grails.SporkClientTestType') }
-    try {
-        doLoad()
-    }
-    catch(ClassNotFoundException ignored) {
-        includeTargets << grailsScript("_GrailsCompile")
-        compile()
-        doLoad()
-    }
+import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
+import org.codehaus.groovy.grails.test.support.GrailsTestMode
+
+guardTests = []
+
+loadGuardTestTypes = {
+    phasesToRun << "guard"
+    def mode = new GrailsTestMode(autowire: true, wrapInTransaction: true, wrapInRequestEnvironment: true)
+    guardTests << new JUnit4GrailsTestType("guard", "integration", mode)
 }
 
-sporkTests = []
-
-loadSporkTestTypes = {
-    phasesToRun << "spork"
-    sporkTests << loadSporkTestTypeClass().newInstance(metadata.'app.name', "spork", "integration")
+// Guard testing uses the same startup as integration
+guardTestPhasePreparation = {
+    integrationTestPhasePreparation()
 }
 
-sporkTestPhasePreparation = {
-}
-
-sporkTestPhaseCleanUp = {
+// Instead of cleaning up, we want to loop
+guardTestPhaseCleanUp = {
+    includeTargets << new File("${basedir}/scripts/_Guard.groovy")
+    watchForTestChanges()
 }
 
 eventAllTestsStart = {
-    loadSporkTestTypes()
+    loadGuardTestTypes()
 }
 
 eventPackagePluginsEnd = {
-    loadSporkTestTypes()
+    loadGuardTestTypes()
 }
