@@ -13,7 +13,7 @@ Usage
 -----
 To run your tests in guard mode, you need to do two things:
 
-1. Ensure that the spring reloading agent is active for test-app (it is NOT by default).
+1. Ensure that the spring reloading agent is active for test-app *(it is NOT by default for test-app, only run-app)*.
 2. Run your testing in guard mode by replacing "integration:" with "guard:" when running test-app.
 
 The minimum required is this:
@@ -38,8 +38,7 @@ This will first run the integration tests given just like the "integration:" pha
 a mode where it detects changes to any artefacts and testcases. When a change is detected, it will indicate which artefact was changed
 and then run the same tests again with the updates.
 
-*NOTE: GRAILS-8026 causes the -reloading flag to be a bit picky. When running from the command line, ensure that it is the first "-*" type
-flag specified, otherwise it may be ignored*
+**NOTE: GRAILS-8026 causes the -reloading flag to be a bit picky. When running from the command line, ensure that it is the first "-*" type flag specified, otherwise it may be ignored**
 
 Configuration
 -------------
