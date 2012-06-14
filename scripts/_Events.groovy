@@ -16,7 +16,7 @@ guardTestPhasePreparation = {
 
 // Instead of cleaning up, we want to loop
 guardTestPhaseCleanUp = {
-    includeTargets << new File("${basedir}/scripts/_Guard.groovy")
+    includeTargets << new File("${guardPluginDir}/scripts/_Guard.groovy")
     watchForTestChanges()
 }
 
