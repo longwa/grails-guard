@@ -36,17 +36,20 @@ Then run:
 
 This will first run the integration tests given just like the "integration:" phase would. Then it will enter
 a mode where it detects changes to any artefacts and testcases. When a change is detected, it will indicate which artefact was changed
-and then run the same tests again with the updates. The scan frequency is every 3 seconds but can be configured via the "rerun.frequency" system
-property.
+and then run the same tests again with the updates.
 
-* NOTE: GRAILS-8026 causes the -reloading flag to be a bit picky. When running from the command line, ensure that it is the first "-*" type
-flag specified, otherwise it may be ignored.
+*NOTE: GRAILS-8026 causes the -reloading flag to be a bit picky. When running from the command line, ensure that it is the first "-*" type
+flag specified, otherwise it may be ignored*
+
+Configuration
+-------------
+* The scan frequency is every 3 seconds but can be configured via the "rerun.frequency" property.
 
 IntelliJ Support
 --------------
 IntelliJ (and possibly Eclipse though I haven't tried it) can also be used to run guard mode.
 
-In IntelliJ, you must run an integration test once normally. This will give you a "configuration" for the test case which can be edited.
+In IntelliJ, run an integration test once normally. This will give you a "configuration" for the test case which can be edited.
 Click to edit the profile and change "integration:" to "guard:" and add the "-reloading" flag to the end of the command line
 (ensure no other -* flags are prior such as -echoOut).
 
