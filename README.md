@@ -38,8 +38,6 @@ This will first run the integration tests given just like the "integration:" pha
 a mode where it detects changes to any artefacts and testcases. When a change is detected, it will indicate which artefact was changed
 and then run the same tests again with the updates.
 
-**NOTE: GRAILS-8026 causes the -reloading flag to be a bit picky. When running from the command line, ensure that it is the first "-*" type flag specified, otherwise it may be ignored**
-
 Configuration
 -------------
 * The scan frequency is every 3 seconds but can be configured via the "rerun.frequency" property.
@@ -60,3 +58,5 @@ Known Issues
 ------------
 * Since the environment is not reloaded, tests must be careful to cleanup after themselves, even if running against the in-memory database since the create-drop
 only happens when the environment is bootstrapped.
+* GRAILS-8026 causes the -reloading flag to be a bit picky. When running from the command line, ensure that it is the first option specified, otherwise it may be ignored
+
