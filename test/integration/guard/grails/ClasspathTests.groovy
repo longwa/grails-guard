@@ -30,11 +30,11 @@ class ClasspathTests extends GroovyTestCase {
 
     void testAssertionFailure() {
         def something = "Something"
-        assert something != null
+        assert something == null
 
     }
 
-    void testThrowException() {
-        println sampleService.helloWorld()
+    void testServiceCall() {
+        assert sampleService.helloWorld()
     }
 }
