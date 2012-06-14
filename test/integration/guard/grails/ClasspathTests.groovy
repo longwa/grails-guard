@@ -1,9 +1,11 @@
-package spork.grails
+package guard.grails
 
 import org.junit.After
 import org.junit.Before
 
 class ClasspathTests extends GroovyTestCase {
+
+    def sampleService
 
     @Before
     void setUp() {
@@ -13,6 +15,7 @@ class ClasspathTests extends GroovyTestCase {
     @After
     void tearDown() {
         println "Running tearDown()"
+
     }
 
     void testSuccess() {
@@ -22,15 +25,16 @@ class ClasspathTests extends GroovyTestCase {
 
     void testFailure() {
         println "Running testFailure()"
-        fail "This method is designed to fail"
+
     }
 
     void testAssertionFailure() {
         def something = "Something"
-        assert something == null
+        assert something != null
+
     }
 
     void testThrowException() {
-        throw new IllegalArgumentException("You can't do whatever you tried to do here")
+        println sampleService.helloWorld()
     }
 }

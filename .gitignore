@@ -8,6 +8,6 @@ Thumbs.db
 target/
 logs/
 
-grails-spork-*.zip
+grails-guard-*.zip
 plugin.xml
 
