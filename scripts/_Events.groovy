@@ -23,7 +23,3 @@ guardTestPhaseCleanUp = {
 eventAllTestsStart = {
     loadGuardTestTypes()
 }
-
-eventPackagePluginsEnd = {
-    loadGuardTestTypes()
-}
