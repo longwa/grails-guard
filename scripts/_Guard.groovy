@@ -48,7 +48,11 @@ def watchLoop(GuardFileChangeListener listener) {
             grailsConsole.addStatus "--------------------------------------------------------------------"
             grailsConsole.addStatus "Detected changes for ${changes*.name.join(',')}, re-running tests..."
             grailsConsole.addStatus "--------------------------------------------------------------------"
-            sleep(1000)
+
+            while( GrailsProjectWatcher.isReloadInProgress() ) {
+                grailsConsole.info("Waiting for reload to complete...")
+                sleep(2000)
+            }
 
             // Run the tests
             def mode = new GrailsTestMode(autowire: true, wrapInTransaction: true, wrapInRequestEnvironment: true)
