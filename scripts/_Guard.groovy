@@ -55,7 +55,7 @@ def watchLoop(GuardFileChangeListener listener) {
 
             // Check if this is a domain class (quick and dirty check)
             boolean isDomainChange = changes.any { file ->
-                file.absolutePath.contains("grails-app/domain") || file.absolutePath.container("grails-app\\domain")
+                file.absolutePath.contains("grails-app/domain") || file.absolutePath.contains("grails-app\\domain")
             }
 
             // If this is a domain class, wait a little longer before trying to reload
