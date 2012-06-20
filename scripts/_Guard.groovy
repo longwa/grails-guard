@@ -3,7 +3,10 @@ import org.codehaus.groovy.grails.compiler.GrailsProjectWatcher
 import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
 import org.codehaus.groovy.grails.test.support.GrailsTestMode
 
-recompileFrequency = Integer.parseInt(System.getProperty("rerun.frequency") ?: "3")
+// Configurable wait times
+rerunFrequency = Integer.parseInt(System.getProperty("guard.rerun.frequency") ?: "3")
+domainWait = Integer.parseInt(System.getProperty("guard.domain.wait") ?: "5")
+otherWait = Integer.parseInt(System.getProperty("guard.wait") ?: "2")
 
 target(watchForTestChanges: "Watch for changes") {
 
@@ -30,6 +33,7 @@ GuardFileChangeListener registerReloadingListener() {
     def watcher = new GrailsProjectWatcher(projectCompiler, pluginManager)
 
     // Add test directories and a listener so we know when things change
+    //noinspection GroovyAssignabilityCheck
     watcher.addWatchDirectory(testSourceDir, "groovy")
     watcher.addListener(listener)
     watcher.start()
@@ -49,9 +53,25 @@ def watchLoop(GuardFileChangeListener listener) {
             grailsConsole.addStatus "Detected changes for ${changes*.name.join(',')}, re-running tests..."
             grailsConsole.addStatus "--------------------------------------------------------------------"
 
+            // Check if this is a domain class (quick and dirty check)
+            boolean isDomainChange = changes.any { file ->
+                file.absolutePath.contains("grails-app/domain") || file.absolutePath.container("grails-app\\domain")
+            }
+
+            // If this is a domain class, wait a little longer before trying to reload
+            if( isDomainChange ) {
+                grailsConsole.addStatus("Domain class changed, waiting ${domainWait} seconds before running...")
+                sleep(domainWait * 1000)
+            }
+            else {
+                // Always wait just a bit, to let the project watcher ack the changes, otherwise we might
+                // try to use
+                sleep(otherWait * 1000)
+            }
+
+            // See if a reload is still in progress, if so, wait a bit
             while( GrailsProjectWatcher.isReloadInProgress() ) {
-                grailsConsole.info("Waiting for reload to complete...")
-                sleep(2000)
+                sleep(otherWait * 1000)
             }
 
             // Run the tests
@@ -67,7 +87,7 @@ def watchLoop(GuardFileChangeListener listener) {
             grailsConsole.addStatus ""
         }
 
-        sleep(recompileFrequency * 1000)
+        sleep(rerunFrequency * 1000)
     }
 }
 
