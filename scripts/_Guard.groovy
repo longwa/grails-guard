@@ -63,11 +63,6 @@ def watchLoop(GuardFileChangeListener listener) {
                 grailsConsole.addStatus("Domain class changed, waiting ${domainWait} seconds before running...")
                 sleep(domainWait * 1000)
             }
-            else {
-                // Always wait just a bit, to let the project watcher ack the changes, otherwise we might
-                // try to use
-                sleep(otherWait * 1000)
-            }
 
             // See if a reload is still in progress, if so, wait a bit
             while( GrailsProjectWatcher.isReloadInProgress() ) {
