@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Grails Guard Plugin : Provides a way to execute Grails integration tests automatically when tests or artifacts change. This is very similar to the Rails plugin of the same name and a distant cousin of Spork." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Grails Guard Plugin</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/longwa/grails-guard">View on GitHub</a>
+
+          <h1 id="project_title">Grails Guard Plugin</h1>
+          <h2 id="project_tagline">Provides a way to execute Grails integration tests automatically when tests or artifacts change. This is very similar to the Rails plugin of the same name and a distant cousin of Spork.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/longwa/grails-guard/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/longwa/grails-guard/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Grails Guard</h1>
+
+<p>This plugin provides a convenient way to run integration tests without having to suffer repetitive startup costs. Each time an
+integration test suite runs, the grails environment must be compiled and bootstrapped. For a large application, especially one with many domain objects, this
+can take over a minute just to run a single testcase. Over the course of several months this can lead to days of lost productivity just waiting
+for tests to run. </p>
+
+<p>This plugin borrows from the similarly named Rails plugin (although it is more targeted at just running tests in this incarnation).</p>
+
+<p>The plugin essentially runs the tests in a loop, detecting changes to the application (and tests), recompiling, and re-running the tests.</p>
+
+<h2>Usage</h2>
+
+<p>To run your tests in guard mode, you need to do two things:</p>
+
+<ol>
+<li>Ensure that the spring reloading agent is active for test-app <em>(it is NOT by default for test-app, only run-app)</em>.</li>
+<li>Run your testing in guard mode by replacing "integration:" with "guard:" when running test-app.</li>
+</ol><p>The minimum required is this:</p>
+
+<pre><code>grails -reloading test-app guard: &lt;testpatterns...&gt;
+</code></pre>
+
+<p>If you want to see the console output, use:</p>
+
+<pre><code>grails -reloading -echoOut test-app guard: &lt;testpatterns...&gt;
+</code></pre>
+
+<p>Finally, to make life easier, just create an alias in your .bashrc:</p>
+
+<pre><code>alias guard='grails -reloading -echoOut test-app guard: '
+</code></pre>
+
+<p>Then run:</p>
+
+<pre><code>guard my.package.*
+guard MyService
+guard MyService MyOtherService
+</code></pre>
+
+<p>This will first run the integration tests given just like the "integration:" phase would. Then it will enter
+a mode where it detects changes to any artefacts and testcases. When a change is detected, it will indicate which artefact was changed
+and then run the same tests again with the updates.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li>The scan frequency is every 3 seconds but can be configured via the "rerun.frequency" property.</li>
+</ul><h2>IntelliJ Support</h2>
+
+<p>IntelliJ (and possibly Eclipse though I haven't tried it) can also be used to run guard mode.</p>
+
+<p>In IntelliJ, run an integration test once normally. This will give you a "configuration" for the test case which can be edited.
+Click to edit the profile and change "integration:" to "guard:" and add the "-reloading" flag to the end of the command line
+(ensure no other -* flags are prior such as -echoOut).</p>
+
+<p>When you run that configuration, IntelliJ will process the tests normally and then "spin" as if it's waiting for more tests. As you modify files,
+you will see the same tests run again. Since guard never notifies the listeners that the test run is complete, IntelliJ will continue waiting for
+tests until you stop it manually.</p>
+
+<h2>Known Issues</h2>
+
+<ul>
+<li>Since the environment is not reloaded, tests must be careful to cleanup after themselves, even if running against the in-memory database since the create-drop
+only happens when the environment is bootstrapped.</li>
+<li>GRAILS-8026 causes the -reloading flag to be a bit picky. When running from the command line, ensure that it is the first option specified, otherwise it may be ignored</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Grails Guard Plugin maintained by <a href="https://github.com/longwa">longwa</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
