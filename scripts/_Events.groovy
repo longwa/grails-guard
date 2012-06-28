@@ -21,5 +21,10 @@ guardTestPhaseCleanUp = {
 }
 
 eventAllTestsStart = {
-    loadGuardTestTypes()
+    // Only run guard tests if the phase is explicity. This prevents
+    // running guard when doing a grails test-app with no phases given.
+    if( targetPhasesAndTypes['guard'] ) {
+        loadGuardTestTypes()
+    }
 }
+
