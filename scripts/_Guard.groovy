@@ -17,7 +17,7 @@ target(watchForTestChanges: "Watch for changes") {
         grailsConsole.addStatus "--------------------------------------------------------------------"
 
         GuardFileChangeListener listener = registerReloadingListener()
-        watchLoop(listener)
+        watchLoop(listener, guardSpock)
     }
     else {
         grailsConsole.error "Reloading agent not enabled, try running grails with the -reloading flag as the first argument"
@@ -44,7 +44,7 @@ GuardFileChangeListener registerReloadingListener() {
 /**
  * Main watch loop
  */
-def watchLoop(GuardFileChangeListener listener) {
+def watchLoop(GuardFileChangeListener listener, spock) {
     //noinspection GroovyInfiniteLoopStatement
     while(true) {
         def changes = listener.consumeChanges()
@@ -73,9 +73,18 @@ def watchLoop(GuardFileChangeListener listener) {
             def mode = new GrailsTestMode(autowire: true, wrapInTransaction: true, wrapInRequestEnvironment: true)
             def guardTestType = new JUnit4GrailsTestType("guard", "integration", mode)
 
+
             // Run the tests
             currentTestPhaseName = "guard"
             processTests(guardTestType)
+
+            // Run Spock tests
+            if (spock) {
+                def specTestTypeClass = classLoader.loadClass('grails.plugin.spock.test.GrailsSpecTestType')
+                def specTestType = specTestTypeClass.newInstance('spock', "integration")
+                processTests(specTestType)
+            }
+
             currentTestPhaseName = null
 
             grailsConsole.addStatus "Tests Complete"
