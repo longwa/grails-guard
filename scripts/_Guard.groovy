@@ -1,3 +1,5 @@
+import grails.util.Environment
+import org.codehaus.groovy.grails.cli.ScriptExitException
 import org.codehaus.groovy.grails.compiler.DirectoryWatcher
 import org.codehaus.groovy.grails.compiler.GrailsProjectWatcher
 import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
@@ -45,6 +47,10 @@ GuardFileChangeListener registerReloadingListener() {
  * Main watch loop
  */
 def watchLoop(GuardFileChangeListener listener, spock) {
+
+    // Prevent exit on compilation failure
+    System.setProperty("grails.disable.exit", "true")
+
     //noinspection GroovyInfiniteLoopStatement
     while(true) {
         def changes = listener.consumeChanges()
@@ -73,16 +79,20 @@ def watchLoop(GuardFileChangeListener listener, spock) {
             def mode = new GrailsTestMode(autowire: true, wrapInTransaction: true, wrapInRequestEnvironment: true)
             def guardTestType = new JUnit4GrailsTestType("guard", "integration", mode)
 
-
             // Run the tests
-            currentTestPhaseName = "guard"
-            processTests(guardTestType)
+            try {
+                currentTestPhaseName = "guard"
+                processTests(guardTestType)
 
-            // Run Spock tests
-            if (spock) {
-                def specTestTypeClass = classLoader.loadClass('grails.plugin.spock.test.GrailsSpecTestType')
-                def specTestType = specTestTypeClass.newInstance('spock', "integration")
-                processTests(specTestType)
+                // Run Spock tests
+                if (spock) {
+                    def specTestTypeClass = classLoader.loadClass('grails.plugin.spock.test.GrailsSpecTestType')
+                    def specTestType = specTestTypeClass.newInstance('spock', "integration")
+                    processTests(specTestType)
+                }
+            }
+            catch( ScriptExitException e ) {
+                grailsConsole.error("Error running tests", e)
             }
 
             currentTestPhaseName = null
