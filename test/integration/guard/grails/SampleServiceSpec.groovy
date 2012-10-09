@@ -1,17 +1,16 @@
 package guard.grails
-import grails.plugin.spock.IntegrationSpec
 
-import spock.lang.*
+import grails.plugin.spock.IntegrationSpec
 
 class SampleServiceSpec extends IntegrationSpec {
 
-	def sampleService
+    def sampleService
 
-	def "injected sampleService is present"() {
-	    when:
-	    	def msg = sampleService.helloWorld()
+    def "injected sampleService is present"() {
+        when:
+        def msg = sampleService.helloWorld()
 
-	    then:
-	    	msg == "Hello World!"
-  }
+        then:
+        msg == "Hello World!"
+    }
 }
