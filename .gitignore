@@ -1,6 +1,8 @@
 *.class
 *.log
 *.iws
+*.iml
+*.ipr
 workspace.xml
 devDb.*
 Thumbs.db
