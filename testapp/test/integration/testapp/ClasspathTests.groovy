@@ -1,4 +1,4 @@
-package guard.grails
+package testapp
 
 import org.junit.After
 import org.junit.Before
@@ -15,22 +15,6 @@ class ClasspathTests extends GroovyTestCase {
     @After
     void tearDown() {
         println "Running tearDown()"
-
-    }
-
-    void testSuccess() {
-        println "Running testSuccess()"
-        assert true
-    }
-
-    void testFailure() {
-        println "Running testFailure()"
-
-    }
-
-    void testAssertionFailure() {
-        def something = "Something"
-        assert something == null
 
     }
 

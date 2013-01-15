@@ -1,4 +1,4 @@
-package guard.grails
+package testapp
 
 import grails.plugin.spock.IntegrationSpec
 

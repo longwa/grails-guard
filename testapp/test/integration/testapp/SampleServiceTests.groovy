@@ -1,4 +1,4 @@
-package guard.grails
+package testapp
 
 class SampleServiceTests extends GroovyTestCase {
     def sampleService
@@ -10,4 +10,5 @@ class SampleServiceTests extends GroovyTestCase {
     void testHelloWorld() {
         assert sampleService.helloWorld() == "Hello World!"
     }
+
 }
