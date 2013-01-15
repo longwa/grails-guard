@@ -1,4 +1,3 @@
-import grails.util.Environment
 import org.codehaus.groovy.grails.cli.ScriptExitException
 import org.codehaus.groovy.grails.compiler.DirectoryWatcher
 import org.codehaus.groovy.grails.compiler.GrailsProjectWatcher
@@ -67,12 +66,12 @@ def watchLoop(GuardFileChangeListener listener, spock) {
             // If this is a domain class, wait a little longer before trying to reload
             if( isDomainChange ) {
                 grailsConsole.addStatus("Domain class changed, waiting ${domainWait} seconds before running...")
-                sleep(domainWait * 1000)
+                sleep(domainWait * 1000 as int)
             }
 
             // See if a reload is still in progress, if so, wait a bit
             while( GrailsProjectWatcher.isReloadInProgress() ) {
-                sleep(otherWait * 1000)
+                sleep(otherWait * 1000 as int)
             }
 
             // Run the tests
@@ -101,7 +100,7 @@ def watchLoop(GuardFileChangeListener listener, spock) {
             grailsConsole.addStatus ""
         }
 
-        sleep(rerunFrequency * 1000)
+        sleep(rerunFrequency * 1000 as int)
     }
 }
 
