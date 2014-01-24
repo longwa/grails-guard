@@ -1,28 +1,26 @@
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
-grails.project.target.level = 1.6
 
-grails.release.scm.enabled = false
-
+grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
     inherits("global") {
     }
 
-    log "warn" 
+    log "warn"
     repositories {
-      grailsRepo "http://grails.org/plugins"
+        grailsCentral()
+        mavenLocal()
+        mavenCentral()
     }
 
     dependencies {
     }
 
     plugins {
-        build(":tomcat:$grailsVersion", ":release:2.0.3") {
-            export = false
-        }
-        test(":spock:0.6") {
+        build(":release:3.0.1", ":rest-client-builder:1.0.3") {
             export = false
         }
     }
 }
+

@@ -3,13 +3,16 @@
 *.iws
 *.iml
 *.ipr
+*.swp
+*.ser
+*.zip
 workspace.xml
 devDb.*
 Thumbs.db
+.idea/
 
 target/
 logs/
 
 grails-guard-*.zip
 plugin.xml
-
