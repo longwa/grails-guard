@@ -1,12 +1,12 @@
 import org.codehaus.groovy.grails.cli.ScriptExitException
 import org.codehaus.groovy.grails.compiler.DirectoryWatcher
 import org.codehaus.groovy.grails.compiler.GrailsProjectWatcher
-import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
+import org.codehaus.groovy.grails.test.spock.GrailsSpecTestType
 import org.codehaus.groovy.grails.test.support.GrailsTestMode
 
 // Configurable wait times
 rerunFrequency = Integer.parseInt(System.getProperty("guard.rerun.frequency") ?: "3")
-domainWait = Integer.parseInt(System.getProperty("guard.domain.wait") ?: "5")
+domainWait = Integer.parseInt(System.getProperty("guard.domain.wait") ?: "4")
 otherWait = Integer.parseInt(System.getProperty("guard.wait") ?: "2")
 
 target(watchForTestChanges: "Watch for changes") {
@@ -14,11 +14,11 @@ target(watchForTestChanges: "Watch for changes") {
     // Must have the reloading agent enabled to do much
     if(GrailsProjectWatcher.isReloadingAgentPresent()) {
         grailsConsole.addStatus "--------------------------------------------------------------------"
-        grailsConsole.addStatus "Looping on tests ${testTargetPatterns.rawPattern}..."
+        grailsConsole.addStatus "Looping on tests ${projectTestRunner.testTargetPatterns.rawPattern}..."
         grailsConsole.addStatus "--------------------------------------------------------------------"
 
         GuardFileChangeListener listener = registerReloadingListener()
-        watchLoop(listener, guardSpock)
+        watchLoop(listener)
     }
     else {
         grailsConsole.error "Reloading agent not enabled, try running grails with the -reloading flag as the first argument"
@@ -45,7 +45,7 @@ GuardFileChangeListener registerReloadingListener() {
 /**
  * Main watch loop
  */
-def watchLoop(GuardFileChangeListener listener, spock) {
+def watchLoop(GuardFileChangeListener listener) {
 
     // Prevent exit on compilation failure
     System.setProperty("grails.disable.exit", "true")
@@ -76,19 +76,12 @@ def watchLoop(GuardFileChangeListener listener, spock) {
 
             // Run the tests
             def mode = new GrailsTestMode(autowire: true, wrapInTransaction: true, wrapInRequestEnvironment: true)
-            def guardTestType = new JUnit4GrailsTestType("guard", "integration", mode)
+            def guardTestType = new GrailsSpecTestType("guard", "integration", mode)
 
             // Run the tests
             try {
                 currentTestPhaseName = "guard"
                 processTests(guardTestType)
-
-                // Run Spock tests
-                if (spock) {
-                    def specTestTypeClass = classLoader.loadClass('grails.plugin.spock.test.GrailsSpecTestType')
-                    def specTestType = specTestTypeClass.newInstance('spock', "integration")
-                    processTests(specTestType)
-                }
             }
             catch( ScriptExitException e ) {
                 grailsConsole.error("Error running tests", e)

@@ -1,21 +1,18 @@
-package testapp
+package test
 
-import org.junit.After
-import org.junit.Before
+import grails.test.mixin.TestMixin
+import grails.test.mixin.integration.IntegrationTestMixin
 
-class ClasspathTests extends GroovyTestCase {
-
+@TestMixin(IntegrationTestMixin)
+class ClasspathTests {
     def sampleService
 
-    @Before
     void setUp() {
         println "Running setUp()"
     }
 
-    @After
     void tearDown() {
         println "Running tearDown()"
-
     }
 
     void testServiceCall() {

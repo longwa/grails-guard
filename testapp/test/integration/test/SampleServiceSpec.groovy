@@ -1,9 +1,8 @@
-package testapp
+package test
 
-import grails.plugin.spock.IntegrationSpec
+import grails.test.spock.IntegrationSpec
 
 class SampleServiceSpec extends IntegrationSpec {
-
     def sampleService
 
     def "injected sampleService is present"() {
