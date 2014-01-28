@@ -1,18 +1,15 @@
 //noinspection GroovyUnusedAssignment
 eventAllTestsStart = {
-    // Guard can either run as a phase using guard: <pattern> or via a flag -guard
-    if( targetPhasesAndTypes['guard'] || projectTestRunner.testOptions['guard'] ) {
-
-        // Support specifying guard as a test phase. If given as a phase, remove the
-        // guard phase name and replace with the same types for integration.
-        if (targetPhasesAndTypes['guard']) {
-            def types = targetPhasesAndTypes.remove('guard')
-            targetPhasesAndTypes['integration'] = types
+    if (testOptions['guard']) {
+        if (grailsSettings.forkSettings.test) {
+            grailsConsole.error("Guard doesn't support forked mode execution (yet), please disabled forked mode for 'test' in BuildConfig.groovy")
+            System.exit(1)
         }
-
-        // Replace the integration configurer with one that loops instead of cleaning up
-        def configurer = loadGuardTestPhaseConfigurer().newInstance([projectTestRunner, projectCompiler, projectLoader] as Object[])
-        projectTestRunner.testFeatureDiscovery.configurers.integration = configurer
+        else {
+            // Replace the integration configurer with one that loops instead of cleaning up
+            def configurer = loadGuardTestPhaseConfigurer().newInstance([projectTestRunner, projectCompiler, projectLoader] as Object[])
+            projectTestRunner.testFeatureDiscovery.configurers.integration = configurer
+        }
     }
 }
 

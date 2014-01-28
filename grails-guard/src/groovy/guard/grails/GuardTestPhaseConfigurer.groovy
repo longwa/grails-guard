@@ -59,10 +59,9 @@ class GuardTestPhaseConfigurer extends IntegrationTestPhaseConfigurer {
             watchLoop()
         }
         else {
-            grailsConsole.error "The reloading agent not enabled, try running grails with the '-reloading' flag as the first argument:"
-            grailsConsole.error "grails -reloading test-app guard: className"
-            grailsConsole.error "or"
-            grailsConsole.error "grails -reloading test-app integration: className -guard"
+            grailsConsole.error "The reloading agent is not enabled, try running grails with the '-reloading' flag as the first argument"
+            grailsConsole.error "Ex:"
+            grailsConsole.error "  grails -reloading -guard test-app integration: className"
         }
 
         super.cleanup(testExecutionContext, testOptions)
