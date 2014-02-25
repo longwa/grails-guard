@@ -41,7 +41,7 @@ If you want to see the console output, use:
 
 Finally, to make life easier, just create an alias in your .bashrc:
 
-    alias guard='grails -reloading -echoOut -guard test-app integration::'
+    alias guard='grails -reloading -echoOut -guard test-app integration:'
 
 Then run:
 
