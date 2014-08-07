@@ -2,8 +2,8 @@ package guard.grails
 
 import grails.build.logging.GrailsConsole
 import org.codehaus.groovy.grails.commons.GrailsApplication
-import org.codehaus.groovy.grails.compiler.GrailsProjectCompiler
-import org.codehaus.groovy.grails.compiler.GrailsProjectWatcher
+import org.codehaus.groovy.grails.project.compiler.GrailsProjectCompiler
+import org.codehaus.groovy.grails.project.compiler.GrailsProjectWatcher
 import org.codehaus.groovy.grails.project.loader.GrailsProjectLoader
 import org.codehaus.groovy.grails.test.runner.GrailsProjectTestRunner
 import org.codehaus.groovy.grails.test.runner.phase.IntegrationTestPhaseConfigurer

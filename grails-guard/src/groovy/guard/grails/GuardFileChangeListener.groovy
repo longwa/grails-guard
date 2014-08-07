@@ -1,7 +1,6 @@
 package guard.grails
 
 import org.codehaus.groovy.grails.compiler.DirectoryWatcher
-import org.codehaus.groovy.grails.compiler.GrailsProjectWatcher
 
 /**
  * Listener to collect changes by the reloading agent. I believe it needs to be synchronized
@@ -23,10 +22,6 @@ class GuardFileChangeListener implements DirectoryWatcher.FileChangeListener {
     }
 
     synchronized List<File> consumeChanges(long delay) {
-        if (GrailsProjectWatcher.isReloadInProgress()) {
-            return []
-        }
-
         if (new Date().time - lastUpdate < delay) {
             return []
         }
