@@ -2,9 +2,9 @@
 <html>
 
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Grails Guard Plugin : Provides a way to execute Grails integration tests automatically when tests or artifacts change. This is very similar to the Rails plugin of the same name and a distant cousin of Spork." />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Grails Guard Plugin : Provides a way to execute Grails integration tests automatically when tests or artifacts change. This is very similar to the Rails plugin of the same name and a distant cousin of Spork.">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -47,13 +47,17 @@ the selected test(s) are re-run. </p>
 <h2>
 <a name="versions" class="anchor" href="#versions"><span class="octicon octicon-link"></span></a>Versions</h2>
 
-<p>Due to major changes in the test framework introduced in Grails 2.3, Guard now comes in two different versions:</p>
+<p>Due to major changes to the test infrastructure introduced in Grails 2.3 and 2.4, different versions of Guard are required depending on 
+the version of Grails you are using:</p>
 
 <ul>
-<li>Version 1 - Compatible with Grails 2.0, 2.1, or 2.2</li>
-<li>Version 2 - Compatible with Grails 2.3 or later.</li>
-</ul><h2>
-<a name="usage-version-2-" class="anchor" href="#usage-version-2-"><span class="octicon octicon-link"></span></a>Usage (Version 2) </h2>
+<li>Version 1.x.x - Compatible with Grails 2.0, 2.1, or 2.2</li>
+<li>Version 2.0.x - Compatible with Grails 2.3</li>
+<li>Version 2.1.x - Compatible with Grails 2.4 </li>
+</ul><p>Unfortunately, it's just not possible to build one version of Guard that works reliably with all of these different versions.</p>
+
+<h2>
+<a name="usage-version-2x-" class="anchor" href="#usage-version-2x-"><span class="octicon octicon-link"></span></a>Usage (Version 2.x) </h2>
 
 <p>Starting with version 2, Guard is no longer implemented as a test phase. Guard is now enabled via the command line flag "-guard". </p>
 
@@ -94,7 +98,7 @@ a mode where it detects changes to application code and test code.  When a chang
 and then run the same test pattern again with the updates.</p>
 
 <h2>
-<a name="usage-version-1" class="anchor" href="#usage-version-1"><span class="octicon octicon-link"></span></a>Usage (Version 1)</h2>
+<a name="usage-version-1x" class="anchor" href="#usage-version-1x"><span class="octicon octicon-link"></span></a>Usage (Version 1.x)</h2>
 
 <p>For version 1, Guard is still implemented as a test phase replacement for "integration:".</p>
 
