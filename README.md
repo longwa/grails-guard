@@ -12,12 +12,16 @@ the selected test(s) are re-run.
 
 Versions
 --------
-Due to major changes in the test framework introduced in Grails 2.3, Guard now comes in two different versions:
+Due to major changes to the test infrastructure introduced in Grails 2.3 and 2.4, different versions of Guard are required depending on 
+the version of Grails you are using:
 
-* Version 1 - Compatible with Grails 2.0, 2.1, or 2.2
-* Version 2 - Compatible with Grails 2.3 or later.
+* Version 1.x.x - Compatible with Grails 2.0, 2.1, or 2.2
+* Version 2.0.x - Compatible with Grails 2.3
+* Version 2.1.x - Compatible with Grails 2.4 
 
-Usage (Version 2) 
+Unfortunately, it's just not possible to build one version of Guard that works reliably with all of these different versions.
+
+Usage (Version 2.x) 
 -----------------      
 Starting with version 2, Guard is no longer implemented as a test phase. Guard is now enabled via the command line flag "-guard". 
 
@@ -53,7 +57,7 @@ This will run the tests once as it normally would. Regardless of the success or 
 a mode where it detects changes to application code and test code.  When a change is detected, it will indicate which file was changed
 and then run the same test pattern again with the updates.
 
-Usage (Version 1)
+Usage (Version 1.x)
 -----------------
 For version 1, Guard is still implemented as a test phase replacement for "integration:".
 
