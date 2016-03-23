@@ -37,7 +37,7 @@ To run your tests in guard mode, you need to do a few things:
 For example:
 
     grails -reloading -guard test-app integration: <testpatterns...>
-    grails -reloading -guard test-app integration: MyService
+    grails -reloading -guard test-app integration: MyServiceSpec
 
 If you want to see the console output, use:
 
